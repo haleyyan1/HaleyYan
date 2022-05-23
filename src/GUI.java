@@ -60,6 +60,8 @@ public class GUI implements ActionListener {
             if (text.equals("Enter")){
                 String ipadd = enterIP.getText();
                 try {
+                    /*Location loc = new Location(Client.makeAPICall(ipadd));
+                    weather.setText(loc.toString());*/
                     weather.setText(Client.makeAPICall(ipadd));
                 } catch (IOException ex) {
                     ex.printStackTrace();
