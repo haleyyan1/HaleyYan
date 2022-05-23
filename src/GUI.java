@@ -9,13 +9,14 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 public class GUI implements ActionListener {
     private JTextArea weather;
     private JTextField enterIP;
     private Client ma;
     public GUI(){
-        weather = new JTextArea(5,30);
+        weather = new JTextArea(30,30);
         enterIP= new JTextField();
         ma = new Client();
         setupGui();
@@ -24,14 +25,14 @@ public class GUI implements ActionListener {
     {
         JFrame frame = new JFrame("Weather App for IPs");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        JLabel welcomeLabel = new JLabel("Current Weather");
-        welcomeLabel.setFont(new Font("Helvetica", Font.BOLD, 20));
+        JLabel welcomeLabel = new JLabel("Weather App");
+        welcomeLabel.setFont(new Font("Lucida Bright", Font.BOLD, 20));
         welcomeLabel.setForeground(Color.black);
         JPanel logoWelcomePanel = new JPanel();
         logoWelcomePanel.add(welcomeLabel);
         JPanel movieListPanel = new JPanel();
-        weather.setText("");
-        weather.setFont(new Font("Helvetica", Font.PLAIN, 16));
+        weather.setText("Enter an IP address");
+        weather.setFont(new Font("Lucida Bright", Font.PLAIN, 16));
         weather.setWrapStyleWord(true);
         weather.setLineWrap(true);
         movieListPanel.add(weather);
@@ -57,10 +58,17 @@ public class GUI implements ActionListener {
             JButton button = (JButton)(e.getSource());
             String text = button.getText();
             if (text.equals("Enter")){
-                int ipadd = Integer.parseInt(enterIP.getText());
+                String ipadd = enterIP.getText();
+                try {
+                    weather.setText(Client.makeAPICall(ipadd));
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                } catch (InterruptedException ex) {
+                    ex.printStackTrace();
+                }
             }
             else if (text.equals("Reset")){
-                enterIP.setText("");
+                weather.setText("Enter an IP address");
             }
     }
 }
