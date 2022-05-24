@@ -1,14 +1,13 @@
-import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
-public class Client {
+public class APIWeatherClient {
     private String APIkey;
     private String baseURL;
 
-    public Client(){
+    public APIWeatherClient(){
         APIkey = "b9185024a2mshc2cd7b37131cff8p173310jsn3bc6cc53e969";
         baseURL= "weatherapi-com.p.rapidapi.com";
     }

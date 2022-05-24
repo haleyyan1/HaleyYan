@@ -12,16 +12,16 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class GUI implements ActionListener {
+public class WeatherAppGUI implements ActionListener {
     private JTextArea weather;
     private JTextField enterIP;
-    private Client ma;
+    private APIWeatherClient ma;
     private ArrayList<String> history;
 
-    public GUI(){
+    public WeatherAppGUI(){
         weather = new JTextArea(30,30);
         enterIP= new JTextField();
-        ma = new Client();
+        ma = new APIWeatherClient();
         history = new ArrayList<String>();
         setupGui();
     }
@@ -82,10 +82,10 @@ public class GUI implements ActionListener {
             if (text.equals("Enter")){
                 String ipadd = enterIP.getText();
                 try {
-                    /*Location loc = new Location(Client.makeAPICall(ipadd));
-                    weather.setText(loc.toString());*/
-                    weather.setText(Client.makeAPICall(ipadd));
-                    if (!(Client.makeAPICall(ipadd).equals("{\"error\":{\"code\":1006,\"message\":\"No matching location found.\"}}"))&&!alreadySearched(ipadd)){
+                    Location loc = new Location(APIWeatherClient.makeAPICall(ipadd));
+                    weather.setText(loc.toString());
+                    //weather.setText(APIWeatherClient.makeAPICall(ipadd));
+                    if (!(APIWeatherClient.makeAPICall(ipadd).equals("{\"error\":{\"code\":1006,\"message\":\"No matching location found.\"}}"))&&!alreadySearched(ipadd)){
                     history.add(ipadd);}
                 } catch (IOException ex) {
                     ex.printStackTrace();
