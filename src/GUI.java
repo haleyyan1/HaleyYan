@@ -10,15 +10,19 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class GUI implements ActionListener {
     private JTextArea weather;
     private JTextField enterIP;
     private Client ma;
+    private ArrayList<String> history;
+
     public GUI(){
         weather = new JTextArea(30,30);
         enterIP= new JTextField();
         ma = new Client();
+        history = new ArrayList<String>();
         setupGui();
     }
     private void setupGui()
@@ -54,6 +58,24 @@ public class GUI implements ActionListener {
         frame.setVisible(true);
     }
 
+    private String listHistory(){
+        String s ="";
+        for (int i = 0; i<history.size();i++){
+            s+=history.get(i)+"\n";
+        }
+        return s;
+    }
+
+    private boolean alreadySearched(String s){
+        boolean b = false;
+        for (int i = 0;i<history.size();i++){
+            if (s.equals(history.get(i))){
+                b=true;
+            }
+        }
+        return b;
+    }
+
     public void actionPerformed(ActionEvent e) {
             JButton button = (JButton)(e.getSource());
             String text = button.getText();
@@ -63,6 +85,8 @@ public class GUI implements ActionListener {
                     /*Location loc = new Location(Client.makeAPICall(ipadd));
                     weather.setText(loc.toString());*/
                     weather.setText(Client.makeAPICall(ipadd));
+                    if (!(Client.makeAPICall(ipadd).equals("{\"error\":{\"code\":1006,\"message\":\"No matching location found.\"}}"))&&!alreadySearched(ipadd)){
+                    history.add(ipadd);}
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 } catch (InterruptedException ex) {
@@ -70,7 +94,11 @@ public class GUI implements ActionListener {
                 }
             }
             else if (text.equals("Reset")){
-                weather.setText("Enter an IP address");
+                if (history.size()!=0){
+                weather.setText("Enter an IP address\n\nPreviously searched IPS:\n"+listHistory()); }
+                else{
+                    weather.setText("Enter an IP address");
+                }
             }
     }
 }
