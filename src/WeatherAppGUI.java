@@ -83,15 +83,17 @@ public class WeatherAppGUI implements ActionListener {
             if (text.equals("Enter")){
                 String zip = enterZIP.getText();
                 try {
-                    if (!(APIWeatherClient.makeAPICall(zip).equals("{\"error\":{\"code\":1006,\"message\":\"No matching location found.\"}}"))&&!alreadySearched(zip)&&!zip.equals(""))
+                    if (!(APIWeatherClient.makeAPICall(zip).equals("{\"error\":{\"code\":1006,\"message\":\"No matching location found.\"}}"))&&!zip.equals(""))
                     {
-                        history.add(zip);
                         Location loc = new Location(APIWeatherClient.makeAPICall(zip));
                         weather.setText("Zip code: "+zip+"\n\n"+loc.toString());
                     }
                     else
                     {
                         weather.setText(APIWeatherClient.makeAPICall(zip));
+                    }
+                    if (!alreadySearched(zip)&&!(APIWeatherClient.makeAPICall(zip).equals("{\"error\":{\"code\":1006,\"message\":\"No matching location found.\"}}"))&&!zip.equals("")){
+                        history.add(zip);
                     }
                 } catch (IOException ex) {
                     ex.printStackTrace();
