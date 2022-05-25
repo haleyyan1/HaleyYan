@@ -25,6 +25,7 @@ public class WeatherAppGUI implements ActionListener {
         history = new ArrayList<String>();
         setupGui();
     }
+
     private void setupGui()
     {
         JFrame frame = new JFrame("Weather App for IPs");
@@ -82,11 +83,14 @@ public class WeatherAppGUI implements ActionListener {
             if (text.equals("Enter")){
                 String ipadd = enterIP.getText();
                 try {
-                    if (!(APIWeatherClient.makeAPICall(ipadd).equals("{\"error\":{\"code\":1006,\"message\":\"No matching location found.\"}}"))&&!alreadySearched(ipadd)){
-                    history.add(ipadd);
-                    Location loc = new Location(APIWeatherClient.makeAPICall(ipadd));
-                    weather.setText("IP Address: "+ipadd+"\n\n"+loc.toString());}
-                    else {
+                    if (!(APIWeatherClient.makeAPICall(ipadd).equals("{\"error\":{\"code\":1006,\"message\":\"No matching location found.\"}}"))&&!alreadySearched(ipadd))
+                    {
+                        history.add(ipadd);
+                        Location loc = new Location(APIWeatherClient.makeAPICall(ipadd));
+                        weather.setText("IP Address: "+ipadd+"\n\n"+loc.toString());
+                    }
+                    else
+                    {
                         weather.setText(APIWeatherClient.makeAPICall(ipadd));
                     }
                 } catch (IOException ex) {
@@ -97,10 +101,10 @@ public class WeatherAppGUI implements ActionListener {
             }
             else if (text.equals("Reset")){
                 if (history.size()!=0){
-                weather.setText("Enter an IP address\n\nPreviously searched IPS:\n"+listHistory());
-                enterIP.setText("");
+                    weather.setText("Enter an IP address\n\nPreviously searched IPS:\n"+listHistory());
+                    enterIP.setText("");
                 }
-                else{
+                else {
                     weather.setText("Enter an IP address\n");
                 }
             }
