@@ -82,8 +82,6 @@ public class WeatherAppGUI implements ActionListener {
             if (text.equals("Enter")){
                 String ipadd = enterIP.getText();
                 try {
-                    /*Location loc = new Location(APIWeatherClient.makeAPICall(ipadd));
-                    weather.setText("IP Address: "+ipadd+"\n"+loc.toString());*/
                     if (!(APIWeatherClient.makeAPICall(ipadd).equals("{\"error\":{\"code\":1006,\"message\":\"No matching location found.\"}}"))&&!alreadySearched(ipadd)){
                     history.add(ipadd);
                     Location loc = new Location(APIWeatherClient.makeAPICall(ipadd));
