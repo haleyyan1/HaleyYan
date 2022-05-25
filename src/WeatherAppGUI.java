@@ -97,7 +97,9 @@ public class WeatherAppGUI implements ActionListener {
             }
             else if (text.equals("Reset")){
                 if (history.size()!=0){
-                weather.setText("Enter an IP address\n\nPreviously searched IPS:\n"+listHistory()); }
+                weather.setText("Enter an IP address\n\nPreviously searched IPS:\n"+listHistory());
+                enterIP.setText("");
+                }
                 else{
                     weather.setText("Enter an IP address\n");
                 }

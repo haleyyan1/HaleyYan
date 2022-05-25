@@ -5,9 +5,6 @@ import java.net.http.HttpResponse;
 
 public class APIWeatherClient {
 
-    public APIWeatherClient(){
-    }
-
     public static String makeAPICall(String ip) throws java.io.IOException, InterruptedException{
         try{
         HttpRequest request = HttpRequest.newBuilder()
