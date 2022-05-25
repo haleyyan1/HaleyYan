@@ -28,7 +28,7 @@ public class WeatherAppGUI implements ActionListener {
 
     private void setupGui()
     {
-        JFrame frame = new JFrame("Weather App for IPs");
+        JFrame frame = new JFrame("Weather App for Zipcodes");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         JLabel welcomeLabel = new JLabel("Weather App");
         welcomeLabel.setFont(new Font("Lucida Bright", Font.BOLD, 20));
@@ -36,16 +36,16 @@ public class WeatherAppGUI implements ActionListener {
         JPanel logoWelcomePanel = new JPanel();
         logoWelcomePanel.add(welcomeLabel);
         JPanel movieListPanel = new JPanel();
-        weather.setText("Enter an IP address");
+        weather.setText("Enter a zipcode");
         weather.setFont(new Font("Lucida Bright", Font.PLAIN, 16));
         weather.setWrapStyleWord(true);
         weather.setLineWrap(true);
         movieListPanel.add(weather);
         JPanel entryPanel = new JPanel();
-        JLabel movieLabel = new JLabel("IP Address: ");
+        JLabel movieLabel = new JLabel("Zipcode: ");
         enterZIP = new JTextField(10);
         JButton sendButton = new JButton("Enter");
-        JButton resetButton = new JButton("Reset");
+        JButton resetButton = new JButton("Clear");
         entryPanel.add(movieLabel);
         entryPanel.add(enterZIP);
         entryPanel.add(sendButton);
