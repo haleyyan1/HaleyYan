@@ -21,6 +21,7 @@ public class Location {
         humidity="Humidity: "+obj.getJSONObject("current").getInt("humidity");
         realFeel="Feels like "+obj.getJSONObject("current").getDouble("feelslike_c")+" °C";
     }
+
     public String toString(){
         return name+", "+region+"\n\n"+temp+"\n\n"+condition+"\n\n"+wind+"\n\n"+precip+"\n\n"+humidity+"\n\n"+realFeel;
     }
