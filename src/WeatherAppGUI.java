@@ -28,7 +28,7 @@ public class WeatherAppGUI implements ActionListener {
 
     private void setupGui()
     {
-        JFrame frame = new JFrame("Weather App for Zipcodes");
+        JFrame frame = new JFrame("Weather App for Zip Codes");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         JLabel welcomeLabel = new JLabel("Weather App");
         welcomeLabel.setFont(new Font("Lucida Bright", Font.BOLD, 20));
@@ -36,13 +36,13 @@ public class WeatherAppGUI implements ActionListener {
         JPanel logoWelcomePanel = new JPanel();
         logoWelcomePanel.add(welcomeLabel);
         JPanel movieListPanel = new JPanel();
-        weather.setText("Enter a zipcode");
+        weather.setText("Enter a zip code");
         weather.setFont(new Font("Lucida Bright", Font.PLAIN, 16));
         weather.setWrapStyleWord(true);
         weather.setLineWrap(true);
         movieListPanel.add(weather);
         JPanel entryPanel = new JPanel();
-        JLabel movieLabel = new JLabel("Zipcode: ");
+        JLabel movieLabel = new JLabel("Zip code: ");
         enterZIP = new JTextField(10);
         JButton sendButton = new JButton("Enter");
         JButton resetButton = new JButton("Clear");
@@ -81,17 +81,17 @@ public class WeatherAppGUI implements ActionListener {
             JButton button = (JButton)(e.getSource());
             String text = button.getText();
             if (text.equals("Enter")){
-                String ipadd = enterZIP.getText();
+                String zip = enterZIP.getText();
                 try {
-                    if (!(APIWeatherClient.makeAPICall(ipadd).equals("{\"error\":{\"code\":1006,\"message\":\"No matching location found.\"}}"))&&!alreadySearched(ipadd)&&!ipadd.equals(""))
+                    if (!(APIWeatherClient.makeAPICall(zip).equals("{\"error\":{\"code\":1006,\"message\":\"No matching location found.\"}}"))&&!alreadySearched(zip)&&!zip.equals(""))
                     {
-                        history.add(ipadd);
-                        Location loc = new Location(APIWeatherClient.makeAPICall(ipadd));
-                        weather.setText("Zipcode: "+ipadd+"\n\n"+loc.toString());
+                        history.add(zip);
+                        Location loc = new Location(APIWeatherClient.makeAPICall(zip));
+                        weather.setText("Zip code: "+zip+"\n\n"+loc.toString());
                     }
                     else
                     {
-                        weather.setText(APIWeatherClient.makeAPICall(ipadd));
+                        weather.setText(APIWeatherClient.makeAPICall(zip));
                     }
                 } catch (IOException ex) {
                     ex.printStackTrace();
@@ -101,11 +101,11 @@ public class WeatherAppGUI implements ActionListener {
             }
             else if (text.equals("Clear")){
                 if (history.size()!=0){
-                    weather.setText("Enter a zip code\n\nPreviously searched zipcodes:\n"+listHistory());
+                    weather.setText("Enter a zip code\n\nPreviously searched zip codes:\n"+listHistory());
                     enterZIP.setText("");
                 }
                 else {
-                    weather.setText("Enter a zipcode\n");
+                    weather.setText("Enter a zip code\n");
                 }
             }
     }
