@@ -19,7 +19,7 @@ public class WeatherAppGUI implements ActionListener {
     private ArrayList<String> history;
 
     public WeatherAppGUI(){
-        weather = new JTextArea(30,30);
+        weather = new JTextArea(20,30);
         enterIP= new JTextField();
         ma = new APIWeatherClient();
         history = new ArrayList<String>();
@@ -85,7 +85,7 @@ public class WeatherAppGUI implements ActionListener {
                     if (!(APIWeatherClient.makeAPICall(ipadd).equals("{\"error\":{\"code\":1006,\"message\":\"No matching location found.\"}}"))&&!alreadySearched(ipadd)){
                     history.add(ipadd);
                     Location loc = new Location(APIWeatherClient.makeAPICall(ipadd));
-                    weather.setText("IP Address: "+ipadd+"\n"+loc.toString());}
+                    weather.setText("IP Address: "+ipadd+"\n\n"+loc.toString());}
                     else {
                         weather.setText(APIWeatherClient.makeAPICall(ipadd));
                     }
@@ -99,7 +99,7 @@ public class WeatherAppGUI implements ActionListener {
                 if (history.size()!=0){
                 weather.setText("Enter an IP address\n\nPreviously searched IPS:\n"+listHistory()); }
                 else{
-                    weather.setText("Enter an IP address");
+                    weather.setText("Enter an IP address\n");
                 }
             }
     }
