@@ -5,10 +5,10 @@ import java.net.http.HttpResponse;
 
 public class APIWeatherClient {
 
-    public static String makeAPICall(String ip) throws java.io.IOException, InterruptedException{
+    public static String makeAPICall(String zip) throws java.io.IOException, InterruptedException{
         try{
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("https://weatherapi-com.p.rapidapi.com/current.json?q="+ip))
+                .uri(URI.create("https://weatherapi-com.p.rapidapi.com/current.json?q="+zip))
                 .header("X-RapidAPI-Host", "weatherapi-com.p.rapidapi.com")
                 .header("X-RapidAPI-Key", "b9185024a2mshc2cd7b37131cff8p173310jsn3bc6cc53e969")
                 .method("GET", HttpRequest.BodyPublishers.noBody())

@@ -14,13 +14,13 @@ import java.util.ArrayList;
 
 public class WeatherAppGUI implements ActionListener {
     private JTextArea weather;
-    private JTextField enterIP;
+    private JTextField enterZIP;
     private APIWeatherClient ma;
     private ArrayList<String> history;
 
     public WeatherAppGUI(){
         weather = new JTextArea(20,30);
-        enterIP= new JTextField();
+        enterZIP= new JTextField();
         ma = new APIWeatherClient();
         history = new ArrayList<String>();
         setupGui();
@@ -43,11 +43,11 @@ public class WeatherAppGUI implements ActionListener {
         movieListPanel.add(weather);
         JPanel entryPanel = new JPanel();
         JLabel movieLabel = new JLabel("IP Address: ");
-        enterIP = new JTextField(10);
+        enterZIP = new JTextField(10);
         JButton sendButton = new JButton("Enter");
         JButton resetButton = new JButton("Reset");
         entryPanel.add(movieLabel);
-        entryPanel.add(enterIP);
+        entryPanel.add(enterZIP);
         entryPanel.add(sendButton);
         entryPanel.add(resetButton);
         frame.add(logoWelcomePanel, BorderLayout.NORTH);
@@ -81,13 +81,13 @@ public class WeatherAppGUI implements ActionListener {
             JButton button = (JButton)(e.getSource());
             String text = button.getText();
             if (text.equals("Enter")){
-                String ipadd = enterIP.getText();
+                String ipadd = enterZIP.getText();
                 try {
                     if (!(APIWeatherClient.makeAPICall(ipadd).equals("{\"error\":{\"code\":1006,\"message\":\"No matching location found.\"}}"))&&!alreadySearched(ipadd)&&!ipadd.equals(""))
                     {
                         history.add(ipadd);
                         Location loc = new Location(APIWeatherClient.makeAPICall(ipadd));
-                        weather.setText("IP Address: "+ipadd+"\n\n"+loc.toString());
+                        weather.setText("Zipcode: "+ipadd+"\n\n"+loc.toString());
                     }
                     else
                     {
@@ -99,13 +99,13 @@ public class WeatherAppGUI implements ActionListener {
                     ex.printStackTrace();
                 }
             }
-            else if (text.equals("Reset")){
+            else if (text.equals("Clear")){
                 if (history.size()!=0){
-                    weather.setText("Enter an IP address\n\nPreviously searched IPS:\n"+listHistory());
-                    enterIP.setText("");
+                    weather.setText("Enter a zip code\n\nPreviously searched zipcodes:\n"+listHistory());
+                    enterZIP.setText("");
                 }
                 else {
-                    weather.setText("Enter an IP address\n");
+                    weather.setText("Enter a zipcode\n");
                 }
             }
     }
