@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class WeatherAppGUI implements ActionListener {
+
     private JTextArea weather;
     private JTextField enterZIP;
     private ArrayList<String> history;
