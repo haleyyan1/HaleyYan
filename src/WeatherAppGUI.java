@@ -11,6 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.ArrayList;
+import org.json.JSONObject;
 
 public class WeatherAppGUI implements ActionListener {
 
@@ -89,7 +90,8 @@ public class WeatherAppGUI implements ActionListener {
                     }
                     else
                     {
-                        weather.setText(APIWeatherClient.makeAPICall(zip));
+                        JSONObject obj = new JSONObject(APIWeatherClient.makeAPICall(zip));
+                        weather.setText(obj.getJSONObject("error").getString("message"));
                     }
                     if (!alreadySearched(zip)&&!(APIWeatherClient.makeAPICall(zip).equals("{\"error\":{\"code\":1006,\"message\":\"No matching location found.\"}}"))&&!zip.equals("")){
                         history.add(zip);
