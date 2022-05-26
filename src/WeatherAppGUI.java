@@ -15,13 +15,11 @@ import java.util.ArrayList;
 public class WeatherAppGUI implements ActionListener {
     private JTextArea weather;
     private JTextField enterZIP;
-    private APIWeatherClient ma;
     private ArrayList<String> history;
 
     public WeatherAppGUI(){
         weather = new JTextArea(20,30);
         enterZIP= new JTextField();
-        ma = new APIWeatherClient();
         history = new ArrayList<String>();
         setupGui();
     }
