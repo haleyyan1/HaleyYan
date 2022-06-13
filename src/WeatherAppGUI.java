@@ -1,4 +1,5 @@
 import javax.swing.JFrame;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -12,15 +13,26 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.ArrayList;
 import org.json.JSONObject;
+import java.awt.Image;
 
 public class WeatherAppGUI implements ActionListener {
 
     private JTextArea weather;
     private JTextField enterZIP;
     private ArrayList<String> history;
+    private static String unitSystem = "Metric";
+    JFrame frame = new JFrame("Weather App for Zip Codes");
+    JLabel weatherPic = new JLabel("Weather App");
+    JPanel titlePanel = new JPanel();
+    JPanel weatherListPanel = new JPanel();
+    JButton unit = new JButton(unitSystem);
+    JLabel zipLabel = new JLabel("Zip code: ");
+    JPanel entryPanel = new JPanel();
+    JButton enterButton = new JButton("Enter");
+    JButton clearButton = new JButton("Clear");
 
     public WeatherAppGUI(){
-        weather = new JTextArea(20,30);
+        weather = new JTextArea(20,35);
         enterZIP= new JTextField();
         history = new ArrayList<String>();
         setupGui();
@@ -28,33 +40,27 @@ public class WeatherAppGUI implements ActionListener {
 
     private void setupGui()
     {
-        JFrame frame = new JFrame("Weather App for Zip Codes");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        JLabel welcomeLabel = new JLabel("Weather App");
-        welcomeLabel.setFont(new Font("Lucida Bright", Font.BOLD, 20));
-        welcomeLabel.setForeground(Color.black);
-        JPanel logoWelcomePanel = new JPanel();
-        logoWelcomePanel.add(welcomeLabel);
-        JPanel weatherListPanel = new JPanel();
+        weatherPic.setFont(new Font("Lucida Bright", Font.BOLD, 20));
+        weatherPic.setForeground(Color.black);
+        titlePanel.add(weatherPic);
         weather.setText("Enter a zip code");
         weather.setFont(new Font("Lucida Bright", Font.PLAIN, 16));
         weather.setWrapStyleWord(true);
         weather.setLineWrap(true);
         weatherListPanel.add(weather);
-        JPanel entryPanel = new JPanel();
-        JLabel movieLabel = new JLabel("Zip code: ");
         enterZIP = new JTextField(10);
-        JButton sendButton = new JButton("Enter");
-        JButton resetButton = new JButton("Clear");
-        entryPanel.add(movieLabel);
+        entryPanel.add(unit);
+        entryPanel.add(zipLabel);
         entryPanel.add(enterZIP);
-        entryPanel.add(sendButton);
-        entryPanel.add(resetButton);
-        frame.add(logoWelcomePanel, BorderLayout.NORTH);
+        entryPanel.add(enterButton);
+        entryPanel.add(clearButton);
+        frame.add(titlePanel, BorderLayout.NORTH);
         frame.add(weatherListPanel, BorderLayout.CENTER);
         frame.add(entryPanel, BorderLayout.SOUTH);
-        sendButton.addActionListener(this);
-        resetButton.addActionListener(this);
+        unit.addActionListener(this);
+        enterButton.addActionListener(this);
+        clearButton.addActionListener(this);
         frame.pack();
         frame.setVisible(true);
     }
@@ -77,30 +83,33 @@ public class WeatherAppGUI implements ActionListener {
         return b;
     }
 
+    public void setData(){
+        String zip = enterZIP.getText();
+        try {
+            if (!(APIWeatherClient.makeAPICall(zip).equals("{\"error\":{\"code\":1006,\"message\":\"No matching location found.\"}}"))&&!zip.equals(""))
+            {
+                    Location loc = new Location(APIWeatherClient.makeAPICall(zip), unitSystem);
+                    weather.setText("Zip code: "+zip+"\n\n"+loc.toString());
+            }
+            else
+            {
+                weather.setText("No zip code entered.");
+            }
+            if (!alreadySearched(zip)&&!(APIWeatherClient.makeAPICall(zip).equals("{\"error\":{\"code\":1006,\"message\":\"No matching location found.\"}}"))&&!zip.equals("")){
+                history.add(zip);
+            }
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        } catch (InterruptedException ex) {
+            ex.printStackTrace();
+        }
+    }
+
     public void actionPerformed(ActionEvent e) {
             JButton button = (JButton)(e.getSource());
             String text = button.getText();
             if (text.equals("Enter")){
-                String zip = enterZIP.getText();
-                try {
-                    if (!(APIWeatherClient.makeAPICall(zip).equals("{\"error\":{\"code\":1006,\"message\":\"No matching location found.\"}}"))&&!zip.equals(""))
-                    {
-                        Location loc = new Location(APIWeatherClient.makeAPICall(zip));
-                        weather.setText("Zip code: "+zip+"\n\n"+loc.toString());
-                    }
-                    else
-                    {
-                        JSONObject obj = new JSONObject(APIWeatherClient.makeAPICall(zip));
-                        weather.setText(obj.getJSONObject("error").getString("message"));
-                    }
-                    if (!alreadySearched(zip)&&!(APIWeatherClient.makeAPICall(zip).equals("{\"error\":{\"code\":1006,\"message\":\"No matching location found.\"}}"))&&!zip.equals("")){
-                        history.add(zip);
-                    }
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                } catch (InterruptedException ex) {
-                    ex.printStackTrace();
-                }
+                setData();
             }
             else if (text.equals("Clear")){
                 if (history.size()!=0){
@@ -111,5 +120,18 @@ public class WeatherAppGUI implements ActionListener {
                     weather.setText("Enter a zip code\n");
                 }
             }
+            else if (text.equals("Metric")){
+                unitSystem="Customary";
+                unit.setText("Customary");
+                setData();
+            }
+            else if (text.equals("Customary")){
+                unitSystem="Metric";
+                unit.setText("Metric");
+                setData();
+            }
+    }
+    public static String getUnitSystem(){
+        return unitSystem;
     }
 }
