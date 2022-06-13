@@ -31,10 +31,6 @@ public class Location {
         }
     }
 
-    public String getResponse() {
-        return response;
-    }
-
     public String toString(){
         return name+", "+region+"\n\n"+temp+"\n\n"+condition+"\n\n"+wind+"\n\n"+precip+"\n\n"+humidity+"\n\n"+realFeel;
     }

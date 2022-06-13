@@ -66,21 +66,21 @@ public class WeatherAppGUI implements ActionListener {
     }
 
     private String listHistory(){
-        String s ="";
+        String previouslySearched ="";
         for (int i = 0; i<history.size();i++){
-            s+=history.get(i)+"\n";
+            previouslySearched+=history.get(i)+"\n";
         }
-        return s;
+        return previouslySearched;
     }
 
     private boolean alreadySearched(String s){
-        boolean b = false;
+        boolean already = false;
         for (int i = 0;i<history.size();i++){
             if (s.equals(history.get(i))){
-                b=true;
+                already=true;
             }
         }
-        return b;
+        return already;
     }
 
     public void setData(){
@@ -106,32 +106,25 @@ public class WeatherAppGUI implements ActionListener {
     }
 
     public void actionPerformed(ActionEvent e) {
-            JButton button = (JButton)(e.getSource());
-            String text = button.getText();
-            if (text.equals("Enter")){
-                setData();
+        JButton button = (JButton) (e.getSource());
+        String text = button.getText();
+        if (text.equals("Enter")) {
+            setData();
+        } else if (text.equals("Clear")) {
+            if (history.size() != 0) {
+                weather.setText("Enter a zip code\n\nPreviously searched zip codes:\n" + listHistory());
+                enterZIP.setText("");
+            } else {
+                weather.setText("Enter a zip code\n");
             }
-            else if (text.equals("Clear")){
-                if (history.size()!=0){
-                    weather.setText("Enter a zip code\n\nPreviously searched zip codes:\n"+listHistory());
-                    enterZIP.setText("");
-                }
-                else {
-                    weather.setText("Enter a zip code\n");
-                }
-            }
-            else if (text.equals("Metric")){
-                unitSystem="Customary";
-                unit.setText("Customary");
-                setData();
-            }
-            else if (text.equals("Customary")){
-                unitSystem="Metric";
-                unit.setText("Metric");
-                setData();
-            }
-    }
-    public static String getUnitSystem(){
-        return unitSystem;
+        } else if (text.equals("Metric")) {
+            unitSystem = "Customary";
+            unit.setText("Customary");
+            setData();
+        } else if (text.equals("Customary")) {
+            unitSystem = "Metric";
+            unit.setText("Metric");
+            setData();
+        }
     }
 }
